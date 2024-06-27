@@ -1,5 +1,6 @@
 <script setup>
 import GraphWindow from '@/components/GraphWindow.vue'
+// import TestWindow from '@/components/TestWindow.vue'
 </script>
 
 <template>
@@ -7,4 +8,5 @@ import GraphWindow from '@/components/GraphWindow.vue'
     Hello world
   </p>
   <GraphWindow />
+  <!-- <TestWindow /> -->
 </template>

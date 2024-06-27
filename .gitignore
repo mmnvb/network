@@ -31,3 +31,4 @@ coverage
 
 public/group_members.json
 src/assets/group_members.json
+src/assets/mock.json

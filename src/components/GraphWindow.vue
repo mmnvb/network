@@ -1,24 +1,136 @@
 <script setup>
 import Graph from "graphology";
 import Sigma from "sigma";
+import { EdgeLineProgram, EdgeRectangleProgram } from "sigma/rendering";
 
 import {ref, onMounted, onUnmounted} from 'vue'
 import parsedData from '@/assets/group_members.json'
+// import parsedData from '@/assets/mock.json'
 
 const container = ref()
 const graph = new Graph();
 let sigmaInstance;
 
-const initiateGraph = () =>{
-    graph.addNode("1", { label: "Node 1", x: 0, y: 0, size: 10, color: "blue" });
-    graph.addNode("2", { label: "Node 2", x: 1, y: 1, size: 20, color: "red" });
-    graph.addEdge("1", "2", { size: 5, color: "purple" });
+let readyData;
+let hash = new Map();
+let state = {
+  hoveredNode: null,
+  hoveredNeighbors: new Set(),
+};
 
-    sigmaInstance = new Sigma(graph, container.value);
-    console.log(parsedData)
+const generateHash = () => {
+    for (let i = 0; i<readyData.length;i++){
+        for (let e = 0; e<readyData[i].length; e++){
+            let val = hash.get(readyData[i][e]) || []
+            val.push(i)
+
+            hash.set(readyData[i][e], val)
+        }
+    }
 }
 
+const addAllNodes = () => {
+    let keys = [...hash.keys()]
+
+    for (let i = 0; i<hash.size;i++){
+        graph.addNode(keys[i], {
+            label: keys[i],
+            size: 2,
+            color: "blue",
+            x: Math.random()*readyData.length,
+            y: Math.random()*readyData.length/2
+        })
+    }
+}
+
+const generateEdgesOfPerson = (person) => {
+    for (let i = 0; i<person[1].length; i++){
+        for (let r = 0; r < readyData[i].length; r++){
+            if (graph.hasEdge(person[0], readyData[i][r])){
+                continue
+            }
+
+            if(readyData[i][r] != person[0]){
+                graph.addEdge(person[0], readyData[i][r], { size: 0.000000001})
+            }
+        }
+    }
+}
+
+const addAllEdges = () => {
+    for (const person of hash){
+        generateEdgesOfPerson(person)  
+    }
+}
+
+
+const setHoveredNode = (node) => {
+    if (node) {
+        state.hoveredNode = node;
+        state.hoveredNeighbors = new Set(graph.neighbors(node));
+    } else {
+        state.hoveredNode = null;
+        state.hoveredNeighbors = new Set();
+    }
+    sigmaInstance.refresh();
+};
+
+const initiateGraph = () => {
+    generateHash();
+    console.log("Элементов", hash.size, "В среднем вершин:", hash.size*20)
+    addAllNodes();
+    addAllEdges();
+    console.log("Logic behind. Time to render!")
+    
+    console.time()
+    sigmaInstance = new Sigma(graph, container.value, {
+        defaultEdgeColor: "#e6e6e6",
+        type: 'webgl',
+        defaultEdgeType: "edges-default",
+        edgeProgramClasses: {
+            "edges-default": EdgeRectangleProgram,
+            "edges-fast": EdgeLineProgram,
+        },
+        settings: {
+            batchSizeNodeDrawing: 100000, // Например, отрисовывать по 100 узлов за раз
+            batchSizeEdgeDrawing: 10000,
+        }
+    });
+    console.timeEnd()
+
+    // Используем reducers для динамического изменения внешнего вида узлов и ребер
+    sigmaInstance.setSetting("nodeReducer", (node, data) => {
+        const res = { ...data };
+
+        if (state.hoveredNode && state.hoveredNode !== node && !state.hoveredNeighbors.has(node)) {
+        res.color = "#f6f6f6"; // Серый цвет для не связанных узлов
+        }
+
+        return res;
+    });
+
+    sigmaInstance.setSetting("edgeReducer", (edge, data) => {
+        const res = { ...data };
+
+        if (state.hoveredNode && !graph.hasExtremity(edge, state.hoveredNode)) {
+        res.hidden = true; // Скрыть ребра, не связанные с выбранным узлом
+        }
+
+        return res;
+    });
+
+
+    sigmaInstance.on("clickNode", ({ node }) => {
+        setHoveredNode(node);
+    });
+
+    sigmaInstance.on("doubleClickNode", () => {
+        setHoveredNode(null);
+    });
+};
+
 onMounted(()=>{
+    readyData = Object.entries(parsedData).map(x=>x[1])
     initiateGraph()
 })
 
@@ -30,6 +142,6 @@ onUnmounted(()=>{
 <template>
   <div
     ref="container"
-    class="container border h-96"
+    class="border w-full h-screen"
   />
 </template>
