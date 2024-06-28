@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import {ref} from 'vue'
 import axios from 'axios'
 
-import parsedData from '@/assets/group_members.json'
+// import parsedData from '@/assets/group_members.json'
 // import parsedData from '@/assets/mock.json'
 // import parsedData from '@/assets/mock_me.json'
 
@@ -10,16 +10,17 @@ let readyData;
 let hash = new Map();
 const loader = ref(true)
 
-
 export const useHashStore = defineStore('hashStore', () => {
-  readyData = Object.entries(parsedData).map(x=>x[1])
-
   const initHash = async () => {
     try{
-      const res = await axios.get("https://drive.usercontent.google.com/uc?id=1jH2V0Ppc6qx15gZsJrOK4SeF_VmRCDWk&export=download")
-      console.log(res)
+      const res = await axios.get("https://raw.githubusercontent.com/mmnvb/network/main/src/assets/group_members.json")
+
+      if(res && res.status == 200){
+        readyData = Object.entries(res.data).map(x=>x[1])
+      }
       generateHash()
-    } catch(err){
+    }
+    catch(err){
       console.error(err)
     }
     finally{
