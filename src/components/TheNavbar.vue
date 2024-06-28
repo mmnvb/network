@@ -10,12 +10,14 @@ import { Button } from '@/components/ui/button'
     "
   >
     <div class="w-3/4 flex justify-between items-center">
-      <Button
-        variant="ghost"
-        class="text-base"
-      >
-        Home
-      </Button>
+      <a href="#">
+        <Button
+          variant="ghost"
+          class="text-base"
+        >
+          Home
+        </Button>
+      </a>
       <div class="flex gap-5">
         <Button
           variant="ghost"
@@ -29,11 +31,13 @@ import { Button } from '@/components/ui/button'
         >
           Tools
         </Button>
-        <Button
-          class="text-base"
-        >
-          Graph
-        </Button>
+        <a href="#graph">
+          <Button
+            class="text-base"
+          >
+            Graph
+          </Button>
+        </a>
       </div>
     </div>
   </div>

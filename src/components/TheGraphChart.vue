@@ -155,8 +155,8 @@ onUnmounted(()=>{
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
-    <div class="w-2/5 flex gap-3 self-end">
+  <div class="flex flex-col gap-2 items-center">
+    <div class="w-3/10 flex gap-3 mt-2 mr-3 self-end">
       <Input
         type="text"
         placeholder="Search"
@@ -169,7 +169,13 @@ onUnmounted(()=>{
             
     <div
       ref="container"
-      class="h-96 border rounded"
+      class="container border rounded p-0"
     />
   </div>
 </template>
+
+<style scoped>
+.container{
+    height: 35rem;
+}
+</style>
