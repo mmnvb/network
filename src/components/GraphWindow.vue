@@ -7,6 +7,8 @@ import {ref, onMounted, onUnmounted} from 'vue'
 import { useHashStore } from "@/stores/hash.js";
 import { NODE_COLOR, NODE_SIZE, SELECT_COLOR, SELECT_SIZE, EDGE_SIZE, NODE_BACK_COLOR } from "@/config";
 
+import { Button } from '@/components/UI/button'
+import { Input } from '@/components/UI/input'
 
 const hashStore = useHashStore()
 
@@ -33,8 +35,8 @@ const addAllNodes = () => {
             label: keys[i],
             size: NODE_SIZE,
             color: NODE_COLOR,
-            x: Math.random()*hashStore.readyData.length,
-            y: Math.random()*hashStore.readyData.length/2
+            x: Math.random()*window.innerWidth,
+            y: Math.random()*window.innerHeight
         })
     }
 
@@ -68,6 +70,7 @@ const setHoveredNode = (node) => {
 
 
 const searchNodes = () => {
+    console.log(searchQuery.value)
     state.selectedNodes.clear()
     if(searchQuery.value == '' || searchQuery.value == undefined){
         return
@@ -153,21 +156,19 @@ onUnmounted(()=>{
 <template>
   <div>
     <div class="w-48 border-1">
-      <input
+      <Input
         type="text"
         placeholder="Search"
         v-model="searchQuery"
-      >
-      <input
-        type="button"
-        @click="searchNodes"
-        value="SEARCH"
-      >
+      />
+      <Button @click="searchNodes">
+        Search
+      </Button>
     </div>
       
     <div
       ref="container"
-      class="border w-9/12 h-48 "
+      class="border w-6/12 h-96 "
     />
   </div>
 </template>
