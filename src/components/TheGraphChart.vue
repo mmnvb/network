@@ -7,8 +7,8 @@ import {ref, onMounted, onUnmounted} from 'vue'
 import { useHashStore } from "@/stores/hash.js";
 import { NODE_COLOR, NODE_SIZE, SELECT_COLOR, SELECT_SIZE, EDGE_SIZE, NODE_BACK_COLOR } from "@/config";
 
-import { Button } from '@/components/UI/button'
-import { Input } from '@/components/UI/input'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 const hashStore = useHashStore()
 
@@ -94,7 +94,7 @@ const initiateGraph = () => {
     addAllNodes();
     
     sigmaInstance = new Sigma(graph, container.value, {
-        defaultEdgeColor: "#e6e6e6",
+        defaultEdgeColor: "#B2BAC6",
         type: 'webgl',
         defaultEdgeType: "edges-default",
         edgeProgramClasses: {
@@ -154,8 +154,8 @@ onUnmounted(()=>{
 </script>
 
 <template>
-  <div>
-    <div class="w-48 border-1">
+  <div class="flex flex-col gap-2">
+    <div class="w-2/5 flex gap-3 self-end">
       <Input
         type="text"
         placeholder="Search"
@@ -165,10 +165,10 @@ onUnmounted(()=>{
         Search
       </Button>
     </div>
-      
+            
     <div
       ref="container"
-      class="border w-6/12 h-96 "
+      class="h-96 border rounded"
     />
   </div>
 </template>

@@ -1,16 +1,12 @@
 <script setup>
-
 import TheNavBar from '@/components/TheNavbar.vue'
-import GraphWindow from '@/components/GraphWindow.vue'
+import TheHomeMainPage from "@/components/pages/TheHomeMainPage.vue"
 </script>
 
 <template>
   <TheNavBar />
-  <GraphWindow class="test" />
+  <TheHomeMainPage />
 </template>
 
 <style scoped>
-.test{
-  height: 150rem;
-}
 </style>
