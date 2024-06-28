@@ -159,7 +159,7 @@ onUnmounted(()=>{
     <div class="w-3/10 flex gap-3 mt-2 mr-3 self-end">
       <Input
         type="text"
-        placeholder="Search"
+        placeholder="Search"    
         v-model="searchQuery"
       />
       <Button @click="searchNodes">

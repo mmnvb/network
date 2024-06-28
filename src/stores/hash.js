@@ -5,36 +5,34 @@ import axios from 'axios'
 // import parsedData from '@/assets/group_members.json'
 // import parsedData from '@/assets/mock.json'
 // import parsedData from '@/assets/mock_me.json'
-
-let readyData;
-let hash = new Map();
-const loader = ref(true)
+const ready = ref(false)
+let readyData = ref(null);
+let hash = ref(new Map());
 
 export const useHashStore = defineStore('hashStore', () => {
+
   const initHash = async () => {
     try{
       const res = await axios.get("https://raw.githubusercontent.com/mmnvb/network/main/src/assets/group_members.json")
-
+      console.log(res)
       if(res && res.status == 200){
-        readyData = Object.entries(res.data).map(x=>x[1])
+        readyData.value = Object.entries(res.data).map(x=>x[1])
       }
       generateHash()
+      ready.value = true
     }
     catch(err){
       console.error(err)
     }
-    finally{
-      loader.value = false
-    }
   }
 
   const generateHash = () => {
-    for (let i = 0; i<readyData.length;i++){
-        for (let e = 0; e<readyData[i].length; e++){
-            let val = hash.get(readyData[i][e]) || []
+    for (let i = 0; i<readyData.value.length;i++){
+        for (let e = 0; e<readyData.value[i].length; e++){
+            let val = hash.value.get(readyData.value[i][e]) || []
             val.push(i)
 
-            hash.set(readyData[i][e], val)
+            hash.value.set(readyData.value[i][e], val)
         }
     }
     console.log('generated')
@@ -42,5 +40,5 @@ export const useHashStore = defineStore('hashStore', () => {
 
   initHash()
 
-  return { hash, readyData }
+  return { hash, readyData, ready}
 })
