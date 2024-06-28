@@ -1,6 +1,6 @@
 <script setup>
-import { ArrowUpRight } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
+import IconArrow from '@/components/icons/IconArrowTopRight.vue'
 
 import TheMiniGraph from "@/components/TheMiniGraph.vue"
 
@@ -21,7 +21,7 @@ import TheMiniGraph from "@/components/TheMiniGraph.vue"
           <a href="#">
             <Button class="w-32">
               Graph
-              <ArrowUpRight class="w-4 h-4 ml-1" /> 
+              <IconArrow class="w-4 h-4 ml-1" /> 
             </Button>
           </a>
         </div>
