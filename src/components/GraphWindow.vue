@@ -4,64 +4,53 @@ import Sigma from "sigma";
 import { EdgeLineProgram, EdgeRectangleProgram } from "sigma/rendering";
 
 import {ref, onMounted, onUnmounted} from 'vue'
-import parsedData from '@/assets/group_members.json'
-// import parsedData from '@/assets/mock.json'
+import { useHashStore } from "@/stores/hash.js";
+import { NODE_COLOR, NODE_SIZE, SELECT_COLOR, SELECT_SIZE, EDGE_SIZE, NODE_BACK_COLOR } from "@/config";
+
+
+const hashStore = useHashStore()
 
 const container = ref()
 const graph = new Graph();
 let sigmaInstance;
 
-let readyData;
-let hash = new Map();
+const isClicked = ref(false)
+const lastNode = ref()
+const searchQuery = ref()
+
 let state = {
   hoveredNode: null,
   hoveredNeighbors: new Set(),
+  selectedNodes: new Set()
 };
 
-const generateHash = () => {
-    for (let i = 0; i<readyData.length;i++){
-        for (let e = 0; e<readyData[i].length; e++){
-            let val = hash.get(readyData[i][e]) || []
-            val.push(i)
-
-            hash.set(readyData[i][e], val)
-        }
-    }
-}
 
 const addAllNodes = () => {
-    let keys = [...hash.keys()]
+    let keys = [...hashStore.hash.keys()]
 
-    for (let i = 0; i<hash.size;i++){
+    for (let i = 0; i<hashStore.hash.size;i++){
         graph.addNode(keys[i], {
             label: keys[i],
-            size: 2,
-            color: "blue",
-            x: Math.random()*readyData.length,
-            y: Math.random()*readyData.length/2
+            size: NODE_SIZE,
+            color: NODE_COLOR,
+            x: Math.random()*hashStore.readyData.length,
+            y: Math.random()*hashStore.readyData.length/2
         })
     }
+
+    console.log("Элементов", hashStore.hash.size, "В среднем вершин:", hashStore.hash.size*20)
 }
 
-const generateEdgesOfPerson = (person) => {
-    for (let i = 0; i<person[1].length; i++){
-        for (let r = 0; r < readyData[i].length; r++){
-            if (graph.hasEdge(person[0], readyData[i][r])){
-                continue
+const generateEdgesOfPerson = (node, groups) => {
+    for (let i of groups) {
+        for (let r of hashStore.readyData[i]) {
+            if (graph.hasEdge(node, r) || r == node) {
+                continue;
             }
-
-            if(readyData[i][r] != person[0]){
-                graph.addEdge(person[0], readyData[i][r], { size: 0.000000001})
-            }
+            graph.addEdge(node, r, { size: EDGE_SIZE });
         }
     }
-}
-
-const addAllEdges = () => {
-    for (const person of hash){
-        generateEdgesOfPerson(person)  
-    }
-}
+};
 
 
 const setHoveredNode = (node) => {
@@ -72,17 +61,35 @@ const setHoveredNode = (node) => {
         state.hoveredNode = null;
         state.hoveredNeighbors = new Set();
     }
-    sigmaInstance.refresh();
+    sigmaInstance.refresh({
+      skipIndexation: true,
+    });
 };
 
+
+const searchNodes = () => {
+    state.selectedNodes.clear()
+    if(searchQuery.value == '' || searchQuery.value == undefined){
+        return
+    }
+
+    const query = searchQuery.value.toLowerCase();
+
+    graph.forEachNode((node, attrs) => {
+        if (attrs.label.toLowerCase().includes(query)){
+            state.selectedNodes.add(node)
+        }
+    });
+
+    sigmaInstance.refresh({
+      skipIndexation: true,
+    });
+};
+
+
 const initiateGraph = () => {
-    generateHash();
-    console.log("Элементов", hash.size, "В среднем вершин:", hash.size*20)
     addAllNodes();
-    addAllEdges();
-    console.log("Logic behind. Time to render!")
     
-    console.time()
     sigmaInstance = new Sigma(graph, container.value, {
         defaultEdgeColor: "#e6e6e6",
         type: 'webgl',
@@ -90,20 +97,20 @@ const initiateGraph = () => {
         edgeProgramClasses: {
             "edges-default": EdgeRectangleProgram,
             "edges-fast": EdgeLineProgram,
-        },
-        settings: {
-            batchSizeNodeDrawing: 100000, // Например, отрисовывать по 100 узлов за раз
-            batchSizeEdgeDrawing: 10000,
         }
     });
-    console.timeEnd()
 
     // Используем reducers для динамического изменения внешнего вида узлов и ребер
     sigmaInstance.setSetting("nodeReducer", (node, data) => {
         const res = { ...data };
 
         if (state.hoveredNode && state.hoveredNode !== node && !state.hoveredNeighbors.has(node)) {
-        res.color = "#f6f6f6"; // Серый цвет для не связанных узлов
+            res.color = NODE_BACK_COLOR;
+        }
+
+        if (state.selectedNodes.has(node)){
+            res.color = SELECT_COLOR
+            res.size = SELECT_SIZE
         }
 
         return res;
@@ -113,7 +120,7 @@ const initiateGraph = () => {
         const res = { ...data };
 
         if (state.hoveredNode && !graph.hasExtremity(edge, state.hoveredNode)) {
-        res.hidden = true; // Скрыть ребра, не связанные с выбранным узлом
+            res.hidden = true; 
         }
 
         return res;
@@ -121,16 +128,20 @@ const initiateGraph = () => {
 
 
     sigmaInstance.on("clickNode", ({ node }) => {
-        setHoveredNode(node);
-    });
-
-    sigmaInstance.on("doubleClickNode", () => {
+        if(!isClicked.value || lastNode.value!=node){
+            generateEdgesOfPerson(node, hashStore.hash.get(node))
+            setHoveredNode(node);
+            isClicked.value = true
+            lastNode.value = node
+            return
+        }
+        graph.clearEdges();
         setHoveredNode(null);
+        isClicked.value = false
     });
 };
 
 onMounted(()=>{
-    readyData = Object.entries(parsedData).map(x=>x[1])
     initiateGraph()
 })
 
@@ -140,8 +151,23 @@ onUnmounted(()=>{
 </script>
 
 <template>
-  <div
-    ref="container"
-    class="border w-full h-screen"
-  />
+  <div>
+    <div class="w-48 border-1">
+      <input
+        type="text"
+        placeholder="Search"
+        v-model="searchQuery"
+      >
+      <input
+        type="button"
+        @click="searchNodes"
+        value="SEARCH"
+      >
+    </div>
+      
+    <div
+      ref="container"
+      class="border w-9/12 h-48 "
+    />
+  </div>
 </template>
