@@ -95,6 +95,7 @@ const initiateGraph = () => {
     
     sigmaInstance = new Sigma(graph, container.value, {
         defaultEdgeColor: "#B2BAC6",
+        labelFont: 'system-ui',
         type: 'webgl',
         defaultEdgeType: "edges-default",
         edgeProgramClasses: {

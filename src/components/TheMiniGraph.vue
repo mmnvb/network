@@ -17,7 +17,9 @@ const init = () => {
     graph.addEdge("1", "2", { size: 3, color: "#B2BAC6" });
     graph.addEdge("2", "3", { size: 3, color: "#B2BAC6" });
 
-    render = new Sigma(graph, container.value);
+    render = new Sigma(graph, container.value, {
+      labelFont: 'system-ui'
+    });
 }
 
 onMounted(()=>{

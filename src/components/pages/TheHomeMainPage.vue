@@ -7,7 +7,7 @@ import TheMiniGraph from "@/components/TheMiniGraph.vue"
 </script>
 
 <template>
-  <div class="h-dvh w-full overflow-hidden flex justify-center">
+  <header class="h-dvh w-full overflow-hidden flex justify-center">
     <div class="flex mt-16 w-3/4">
       <div class="w-1/2 flex flex-col justify-evenly">
         <h1 class="text-7xl font-bold text-left leading-snug">
@@ -30,7 +30,7 @@ import TheMiniGraph from "@/components/TheMiniGraph.vue"
         <TheMiniGraph />
       </div>
     </div>
-  </div>
+  </header>
 </template>
 
 <style scoped>
