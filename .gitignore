@@ -30,6 +30,6 @@ coverage
 *.tsbuildinfo
 
 # public/group_members.json
-# src/assets/group_members.json
+src/assets/group_members.json
 # src/assets/mock.json
 # src/assets/mock_me.json
