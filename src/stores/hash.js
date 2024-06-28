@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import {ref} from 'vue'
 import axios from 'axios'
+import CryptoJS from 'crypto-js'
 
 // import parsedData from '@/assets/group_members.json'
 // import parsedData from '@/assets/mock.json'
@@ -13,10 +14,13 @@ export const useHashStore = defineStore('hashStore', () => {
 
   const initHash = async () => {
     try{
-      const res = await axios.get("https://raw.githubusercontent.com/mmnvb/network/main/src/assets/group_members.json")
-      console.log(res)
+      const res = await axios.get("https://raw.githubusercontent.com/mmnvb/network/main/src/assets/encrypted_data.json")
+
       if(res && res.status == 200){
-        readyData.value = Object.entries(res.data).map(x=>x[1])
+        const decryptedBytes = CryptoJS.AES.decrypt(res.data, import.meta.env.VITE_APP_KEY);
+        const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+
+        readyData.value = Object.entries(decryptedData).map(x=>x[1])
       }
       generateHash()
       ready.value = true
