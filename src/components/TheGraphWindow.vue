@@ -6,20 +6,14 @@ const hashStore = useHashStore()
 </script>
 
 <template>
-  <div class="w-3/4">
+  <div class="w-full">
     <!-- todo: make load on click -->
     <TheGraphChart v-if="hashStore.ready" />
     <div
       v-else
-      class="flex justify-center items-center border rounded container"
+      class="flex justify-center items-center"
     >
       Loading
     </div>
   </div>
 </template> 
-
-<style scoped>
-.container{
-    height: 35rem;
-}
-</style>
