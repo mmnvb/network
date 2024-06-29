@@ -18,7 +18,7 @@ import TheMiniGraph from "@/components/TheMiniGraph.vue"
             Let's use the beauty of modern Web to visialize<br>
             every person you have studied with
           </aside>
-          <a href="#">
+          <a href="#graph">
             <Button class="w-32">
               Graph
               <IconArrow class="w-4 h-4 ml-1" /> 
