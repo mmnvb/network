@@ -82,7 +82,7 @@ const init = () => {
     lastNum += 1
     const node = {
       ...coordForGraph,
-      size: 10,
+      size: Math.random() * (30 - 10) + 10,
       color: NODE_COLOR,
       label: `Student ${lastNum}`
     };
