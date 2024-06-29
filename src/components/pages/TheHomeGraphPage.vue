@@ -17,7 +17,7 @@ const isHidden = ref(false)
   >
     <div>
       <h2
-        class="text-6xl m-0"
+        class="text-4xl lg:text-5xl m-0"
       >
         Network graph
       </h2>
@@ -25,7 +25,7 @@ const isHidden = ref(false)
 
     <div
       
-      class="container w-3/4 flex justify-center items-center backdrop-blur"
+      class="container w-11/12 lg:w-3/4 flex justify-center items-center backdrop-blur"
       :class="{'initial border rounded': !isHidden}"
     >
       <div
