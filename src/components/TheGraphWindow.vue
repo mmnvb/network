@@ -7,13 +7,37 @@ const hashStore = useHashStore()
 
 <template>
   <div class="w-full">
-    <!-- todo: make load on click -->
     <TheGraphChart v-if="hashStore.ready" />
     <div
       v-else
-      class="flex justify-center items-center"
+      class="flex justify-center items-center gap-2 flex-col"
     >
-      Loading
+      <div
+        class="loader"
+      />
+      <p class="ml-2">
+        Loading...
+      </p>
     </div>
   </div>
 </template> 
+
+<style scoped>
+.loader{
+  width: 2rem;
+  height: 2rem;
+  border: solid transparent;
+  border-radius: 4px;
+  background-color: #2563EB;
+  animation: loader 2s infinite ease;
+}
+
+@keyframes loader {
+  0%{
+    transform: rotateX(0deg);
+  }
+  100%{
+    transform: rotateX(360deg);
+  }
+}
+</style>

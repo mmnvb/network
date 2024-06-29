@@ -28,12 +28,17 @@ const isHidden = ref(false)
       class="container w-3/4 flex justify-center items-center backdrop-blur"
       :class="{'initial border rounded': !isHidden}"
     >
-      <Button
+      <div
         v-if="!isHidden"
-        @click="isHidden=true"
+        class="flex flex-col gap-2 items-center"
       >
-        Load graph
-      </Button>
+        <Button
+          @click="isHidden=true"
+        >
+          Load graph
+        </Button>
+        <i class="text-slate-500">It's recommended to use a PC</i>
+      </div>
       <TheGraphWindow
         v-else
         id="graph"

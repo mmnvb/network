@@ -10,8 +10,8 @@ import TheMiniGraph from "@/components/TheMiniGraph.vue"
   <header class="h-dvh w-full overflow-hidden flex justify-center">
     <div class="flex mt-16 w-3/4">
       <div class="w-1/2 flex flex-col justify-evenly">
-        <h1 class="text-7xl font-bold text-left leading-snug">
-          Network <span class="boujee-text">graph</span> of my university's students
+        <h1 class="text-8xl font-bold text-left leading-tight">
+          Networking <span class="boujee-text">graph</span> of my university
         </h1>
         <div class="flex flex-col gap-y-16">
           <aside class="text-slate-500">
