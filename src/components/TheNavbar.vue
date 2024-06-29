@@ -1,5 +1,6 @@
 <script setup>
 import { Button } from '@/components/ui/button'
+import IconGithub from './icons/IconGithub.vue';
 </script>
 
 <template>
@@ -25,17 +26,28 @@ import { Button } from '@/components/ui/button'
         >
           About
         </Button>
-        <Button
+        <!-- <Button
           variant="ghost"
           class="text-base"
         >
           Tools
-        </Button>
+        </Button> -->
         <a href="#graph">
           <Button
             class="text-base"
           >
             Graph
+          </Button>
+        </a>
+        <a
+          href="https://github.com/mmnvb/network"
+          target="_blank"
+        >
+          <Button
+            class="rounded-full"
+            variant="outline"
+          >
+            <IconGithub />
           </Button>
         </a>
       </div>
