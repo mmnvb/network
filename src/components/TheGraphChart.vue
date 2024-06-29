@@ -5,7 +5,7 @@ import { EdgeLineProgram, EdgeRectangleProgram } from "sigma/rendering";
 
 import {ref, onMounted, onUnmounted} from 'vue'
 import { useHashStore } from "@/stores/hash.js";
-import { NODE_COLOR, NODE_SIZE, SELECT_COLOR, SELECT_SIZE, EDGE_SIZE, NODE_BACK_COLOR } from "@/config";
+import { NODE_COLOR, NODE_SIZE, SELECT_COLOR, SELECT_SIZE, EDGE_SIZE, NODE_BACK_COLOR, EDGE_COLOR } from "@/config";
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -94,7 +94,7 @@ const initiateGraph = () => {
     addAllNodes();
     
     sigmaInstance = new Sigma(graph, container.value, {
-        defaultEdgeColor: "#B2BAC6",
+        defaultEdgeColor: EDGE_COLOR,
         labelFont: 'system-ui',
         type: 'webgl',
         defaultEdgeType: "edges-default",
