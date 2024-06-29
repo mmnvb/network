@@ -20,12 +20,14 @@ import IconGithub from './icons/IconGithub.vue';
         </Button>
       </a>
       <div class="flex gap-5">
-        <Button
-          variant="ghost"
-          class="text-base"
-        >
-          About
-        </Button>
+        <a href="#about">
+          <Button
+            variant="ghost"
+            class="text-base"
+          >
+            About
+          </Button>
+        </a>
         <!-- <Button
           variant="ghost"
           class="text-base"
