@@ -15,6 +15,7 @@
 
 \
 *Note: Node.js must be installed on your machine*
+*You are missing decryption key in the project which is in .env file, so create your own mock file with the structure like `{int:[strings], ...}`*
 
 ---
 If you faced any violations of your data privacy and you want your data to be removed from this project please contact me. We will fix that.
