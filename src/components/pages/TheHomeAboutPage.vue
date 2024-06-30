@@ -40,7 +40,10 @@ import TheHomeAboutAccordion from "@/components/TheHomeAboutAccordion.vue"
               Github
             </Button>
           </a>
-          <a href="">
+          <a
+            href="https://t.me/muminovbob"
+            target="_blank"
+          >
             <Button class="rounded-full">
               <IconTelegram class="mr-2" />
               Telegram

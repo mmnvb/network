@@ -19,7 +19,7 @@ import IconGithub from './icons/IconGithub.vue';
           Home
         </Button>
       </a>
-      <div class="flex gap-5">
+      <div class="flex gap-4 lg:gap-8">
         <a href="#about">
           <Button
             variant="ghost"
