@@ -60,9 +60,15 @@ onUnmounted(()=>{
   font-size: 3.375rem;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1281px) {
   .title{
     font-size: 6rem;
+  } 
+}
+
+@media (min-width: 1024px) and (max-width: 1280px) {
+  .title{
+    font-size: 4rem;
   } 
 }
 
