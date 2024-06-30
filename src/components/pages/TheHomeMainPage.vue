@@ -2,15 +2,34 @@
 import { Button } from '@/components/ui/button'
 import IconArrow from '@/components/icons/IconArrowTopRight.vue'
 
-import TheMiniGraph from "@/components/TheMiniGraph.vue"
+import { ref, onMounted, defineAsyncComponent, onUnmounted } from 'vue'
+
+const TheMiniGraph = defineAsyncComponent(() =>
+  import('@/components/TheMiniGraph.vue')
+)
+
+const isLg = ref(false)
+
+const handleResize = () => {
+  isLg.value = window.innerWidth >= 1024
+}
+
+onMounted(()=>{
+  isLg.value = window.innerWidth >= 1024
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(()=>{
+  window.removeEventListener('resize', handleResize)
+})
 
 </script>
 
 <template>
   <header class="h-dvh w-full overflow-hidden flex justify-center">
-    <div class="flex mt-16 w-3/4">
-      <div class="w-1/2 flex flex-col justify-evenly">
-        <h1 class="text-8xl font-bold text-left leading-tight">
+    <div class="flex mt-16 w-4/5 lg:w-3/4">
+      <div class="w-full lg:w-1/2 flex flex-col justify-evenly">
+        <h1 class="title lg:text-8xl font-bold text-left leading-tight">
           Networking <span class="boujee-text">graph</span> of my university
         </h1>
         <div class="flex flex-col gap-y-16">
@@ -26,7 +45,10 @@ import TheMiniGraph from "@/components/TheMiniGraph.vue"
           </a>
         </div>
       </div>
-      <div class="w-1/2 flex flex-col justify-center">
+      <div
+        v-if="isLg"
+        class="w-4/5 lg:w-1/2 flex flex-col justify-center"
+      >
         <TheMiniGraph />
       </div>
     </div>
@@ -34,6 +56,16 @@ import TheMiniGraph from "@/components/TheMiniGraph.vue"
 </template>
 
 <style scoped>
+.title{
+  font-size: 3.375rem;
+}
+
+@media (min-width: 1024px) {
+  .title{
+    font-size: 6rem;
+  } 
+}
+
 .boujee-text {
   --bg-size: 400%;
   --color-one: hsl(221, 83%, 53%);

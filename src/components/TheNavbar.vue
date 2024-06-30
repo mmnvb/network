@@ -10,7 +10,7 @@ import IconGithub from './icons/IconGithub.vue';
     w-screen h-12 border py-8 backdrop-blur-lg
     "
   >
-    <div class="w-3/4 flex justify-between items-center">
+    <div class="w-4/5 lg:w-3/4 flex justify-between items-center">
       <a href="#">
         <Button
           variant="ghost"
