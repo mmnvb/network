@@ -34,7 +34,7 @@ onUnmounted(()=>{
         </h1>
         <div class="flex flex-col gap-y-16">
           <aside class="text-slate-500">
-            Let's use the beauty of modern Web to visialize<br>
+            Let's use the beauty of modern Web to visualize<br>
             every person you have studied with
           </aside>
           <a href="#graph">
